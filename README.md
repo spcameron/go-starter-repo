@@ -120,7 +120,6 @@ This will:
 
 ```bash
 mise install
-just test
 ```
 
 ---
@@ -136,7 +135,7 @@ git commit -m "Initial commit from starter"
 Create and push with GitHub CLI:
 
 ```bash
-gh repo create <app> --source=. --remote=origin --push
+gh repo create <app> --public --source=. --remote=origin --push
 ```
 
 ---

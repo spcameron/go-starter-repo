@@ -129,7 +129,7 @@ main() {
   info "  git init"
   info "  git add ."
   info "  git commit -m \"Initial commit from starter\""
-  info "  gh repo create $app --source=. --remote=origin --push"
+  info "  gh repo create $app --public --source=. --remote=origin --push"
 }
 
 main "$@"
