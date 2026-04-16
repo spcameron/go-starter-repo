@@ -3,19 +3,19 @@
 help:
     @just --list
 
-# runs audit & tests
+# runs audit and unit tests
 [group('*workflow')]
 check:
-    @scripts/audit 
+    @scripts/audit
     @scripts/test unit
 
-# runs audit & tests -race
+# runs audit and race tests
 [group('*workflow')]
 ci:
     @scripts/audit
     @scripts/test race
 
-# runs tidy, gofmt, and go-mod-upgrade
+# runs tidy and go-mod-upgrade
 [group('*workflow')]
 maintain:
     @scripts/tidy
@@ -26,7 +26,7 @@ maintain:
 audit:
     @scripts/audit
 
-# runs tidy & gofmt
+# runs tidy and formatting
 [group('quality')]
 tidy:
     @scripts/tidy
@@ -40,37 +40,6 @@ mod-upgrade:
 [group('test')]
 test mode="":
     @scripts/test {{mode}}
-
-# # builds command binary with native target
-# [group('build')]
-# build:
-#     @scripts/build
-#
-# # builds command binary with linux_amd64 target
-# [group('build')]
-# build-linux:
-#     @scripts/build linux_amd64
-#
-# # builds the site pages
-# [group('build')]
-# build-site:
-#     @scripts/build-site
-#
-# # builds command binary, builds the site pages
-# [group('build')]
-# build-all:
-#     @scripts/build
-#     @scripts/build-site
-#
-# # build site output and serve locally (single run)
-# [group('run')]
-# run *args="":
-#     @scripts/serve --build -- {{args}}
-#
-# # start live development server (auto-rebuild on change)
-# [group('run')]
-# run-live:
-#     @air -c .air.toml
 
 # sync main and delete local branch (for branches with no PR)
 [group('git')]
@@ -102,7 +71,7 @@ pr-finish:
 pr-view:
     @scripts/git/pr-view
 
-# push local branch and set upstream to 'origin'
+# push local branch and set upstream to origin
 [group('git')]
 push-upstream:
     @scripts/git/push-upstream
@@ -112,7 +81,7 @@ push-upstream:
 rebase-main:
     @scripts/git/rebase-main
 
-# rebase branch onto upstream
+# rebase branch onto its configured upstream
 [group('git')]
 rebase-upstream:
     @scripts/git/rebase-upstream
@@ -122,7 +91,12 @@ rebase-upstream:
 repair-main:
     @scripts/git/repair-main
 
-# rebase branch onto upstream then origin/main, audit, and publish (force-with-lease)
+# rebase branch onto upstream then origin/main, audit, and publish
+[group('git')]
+sync-branch:
+    @scripts/git/sync-branch
+
+# alias for sync-branch
 [group('git')]
 sync:
     @scripts/git/sync-branch
@@ -131,4 +105,3 @@ sync:
 [group('git')]
 sync-main:
     @scripts/git/sync-main
-
