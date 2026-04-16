@@ -42,7 +42,6 @@ mod_tidy_check() {
 
   tmp_diff="$TMP_DIR/audit-go-mod-tidy.$$.diff"
   tmp_err="$TMP_DIR/audit-go-mod-tidy.$$.err"
-  trap 'rm -f "$tmp_diff" "$tmp_err"' RETURN
 
   set +e
   go mod tidy -diff >"$tmp_diff" 2>"$tmp_err"
@@ -54,6 +53,8 @@ mod_tidy_check() {
     if [[ -s "$tmp_err" ]]; then
       printf '\n%s\n\n' "$(<"$tmp_err")" >&2
     fi
+    cleanup_file "$tmp_diff"
+    cleanup_file "$tmp_err"
     return 1
   fi
 
@@ -68,9 +69,13 @@ mod_tidy_check() {
     err "Refusing: go.mod/go.sum are not tidy."
     printf '\n%s\n\n' "$(<"$tmp_diff")" >&2
     warn "Run 'go mod tidy'"
+    cleanup_file "$tmp_diff"
+    cleanup_file "$tmp_err"
     return 1
   fi
 
+  cleanup_file "$tmp_diff"
+  cleanup_file "$tmp_err"
   ok "... complete."
 }
 
@@ -102,7 +107,6 @@ staticcheck_check() {
   info "Running staticcheck..."
 
   tmp="$TMP_DIR/audit-staticcheck.$$.out"
-  trap 'rm -f "$tmp"' RETURN
 
   set +e
   staticcheck -checks=all,-ST1000,-U1000 ./... >"$tmp" 2>&1
@@ -115,9 +119,11 @@ staticcheck_check() {
       printf '\n%s\n\n' "$(<"$tmp")" >&2
       warn "Review findings and address reported issues"
     fi
+    cleanup_file "$tmp"
     return 1
   fi
 
+  cleanup_file "$tmp"
   ok "... complete."
 }
 
@@ -131,7 +137,6 @@ vulncheck_check() {
   info "Running vulncheck..."
 
   tmp="$TMP_DIR/audit-vulncheck.$$.out"
-  trap 'rm -f "$tmp"' RETURN
 
   set +e
   govulncheck ./... >"$tmp" 2>&1
@@ -144,9 +149,11 @@ vulncheck_check() {
       printf '\n%s\n\n' "$(<"$tmp")" >&2
       warn "Review vulnerabilities; update dependencies or document mitigations"
     fi
+    cleanup_file "$tmp"
     return 1
   fi
 
+  cleanup_file "$tmp"
   ok "... complete."
 }
 

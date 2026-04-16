@@ -146,3 +146,9 @@ project_get() {
 
   printf '%s\n' "$line"
 }
+
+cleanup_file() {
+  # Usage: cleanup_file "path"
+  local path="${1:?path required}"
+  rm -f "$path"
+}
