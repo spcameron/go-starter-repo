@@ -119,7 +119,9 @@ This will:
 ### 4. Install tooling and verify
 
 ```bash
+mise trust
 mise install
+just test
 ```
 
 ---
