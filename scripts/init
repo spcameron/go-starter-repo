@@ -134,7 +134,7 @@ main() {
   ok "... initialization complete."
   info "Next steps:"
   info "  mise install"
-  into "  just test"
+  info "  just test"
   info "  git init"
   info "  git add ."
   info "  git commit -m \"Initial commit from starter\""
