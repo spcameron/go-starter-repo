@@ -3,6 +3,11 @@
 help:
     @just --list
 
+# initialize a cloned starter repo
+[group('*workflow')]
+init app module:
+    @scripts/init {{app}} {{module}}
+
 # runs audit and unit tests
 [group('*workflow')]
 check:

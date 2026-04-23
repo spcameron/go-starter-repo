@@ -50,6 +50,12 @@ require_uninitialized_project() {
   fi
 }
 
+require_no_git_history() {
+  if [[ -d "$ROOT_DIR/.git" ]]; then
+    die "Refusing: .git directory exists. Remove starter history first (rm -rf .git)."
+  fi
+}
+
 set_app_name() {
   local app="${1:?app required}"
   local file="$ROOT_DIR/.project.toml"
@@ -96,6 +102,8 @@ main() {
     exit 2
   }
 
+  require_no_git_history
+
   app="$1"
   module="$2"
 
@@ -126,6 +134,7 @@ main() {
   ok "... initialization complete."
   info "Next steps:"
   info "  mise install"
+  into "  just test"
   info "  git init"
   info "  git add ."
   info "  git commit -m \"Initial commit from starter\""
